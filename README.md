@@ -1,30 +1,37 @@
-# Baby Shower Web Invitation Template
+# Baby Shower Envelope Web Invitation Template
 
-This is a mobile-first animated webpage template based on the baby shower invitation photo.
+This version opens with an animated envelope. Guests tap the envelope first, the flap opens, the invitation slides out, and then the full baby shower invitation appears.
 
-## Included files
+## Files
 
-- `index.html` — page layout and invitation text
-- `style.css` — baby shower design, balloons, teddy bears, house, flowers, and animation
-- `script.js` — map, calendar, RSVP, share button, and replay animation
+- `index.html` — invitation layout and text
+- `style.css` — envelope animation, baby shower design, balloons, teddy bears, house, flowers, and mobile styling
+- `script.js` — envelope open action, map, calendar, RSVP, share button, and replay animation
 
-## How to edit
+## How to edit text
 
-Open `index.html` and update the invitation text.
+Open `index.html` and change:
+- Names
+- Date/time
+- Venue/address
+- Host name
+- RSVP phone number
+- Notes like `Ladies Only` or `No Boxed Gifts Please`
 
-Open `script.js` and update:
+## How to edit links
+
+Open `script.js` and change:
 - Google Maps link
 - RSVP phone number
-- Calendar title
-- Calendar date/time
+- Calendar title/details/location/date/time
 - Share message
 
-## GitHub Pages upload
+## Upload to GitHub Pages
 
 1. Create a new GitHub repository.
-2. Upload `index.html`, `style.css`, `script.js`.
+2. Upload `index.html`, `style.css`, and `script.js`.
 3. Go to **Settings → Pages**.
 4. Choose **Deploy from branch**.
 5. Select `main` and `/root`.
 6. Save.
-7. Share the GitHub Pages link on mobile.
+7. GitHub will give you a link you can share.

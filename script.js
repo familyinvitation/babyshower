@@ -10,6 +10,9 @@ const invitationLinks = {
   calendarTimezone: "America/Chicago"
 };
 
+const phoneWrap = document.getElementById("phoneWrap");
+const openEnvelope = document.getElementById("openEnvelope");
+const envelopeScreen = document.getElementById("envelopeScreen");
 const mapLink = document.getElementById("mapLink");
 const calendarLink = document.getElementById("calendarLink");
 const rsvpLink = document.getElementById("rsvpLink");
@@ -21,6 +24,11 @@ const revealEls = document.querySelectorAll(".reveal");
 mapLink.href = invitationLinks.map;
 rsvpLink.href = invitationLinks.rsvp;
 calendarLink.href = buildGoogleCalendarUrl(invitationLinks);
+
+openEnvelope.addEventListener("click", () => {
+  phoneWrap.classList.add("opened");
+  restartMainAnimation();
+});
 
 shareBtn.addEventListener("click", async () => {
   const shareText =
@@ -42,7 +50,11 @@ shareBtn.addEventListener("click", async () => {
   window.open("https://wa.me/?text=" + encodeURIComponent(`${shareText}\n${window.location.href}`), "_blank", "noopener");
 });
 
-inviteCard.addEventListener("click", replayAnimation);
+inviteCard.addEventListener("click", () => {
+  if (phoneWrap.classList.contains("opened")) {
+    restartMainAnimation();
+  }
+});
 
 function buildGoogleCalendarUrl(data) {
   const params = new URLSearchParams({
@@ -57,7 +69,7 @@ function buildGoogleCalendarUrl(data) {
   return "https://calendar.google.com/calendar/render?" + params.toString();
 }
 
-function replayAnimation() {
+function restartMainAnimation() {
   revealEls.forEach((el) => {
     el.style.animation = "none";
     el.offsetHeight;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Baby Shower Invitation</title>
-  <meta name="description" content="Animated mobile baby shower invitation webpage." />
+  <meta name="description" content="Animated envelope-open baby shower invitation webpage." />
   <meta name="theme-color" content="#9dbdff" />
   <meta property="og:title" content="Baby Shower Invitation" />
   <meta property="og:description" content="Please join us for a Baby Shower honoring Taranjeet Shah Arora and Dhruw Shah." />
@@ -14,11 +14,36 @@
   <!--
     EDIT TEXT HERE:
     Change the names, date, time, venue, address, RSVP number, and notes below.
+
     EDIT BUTTON LINKS:
     Change map/calendar/RSVP/share details in script.js.
   -->
 
-  <main class="phone-wrap">
+  <main class="phone-wrap" id="phoneWrap">
+    <section class="envelope-screen" id="envelopeScreen" aria-label="Open invitation envelope">
+      <div class="floating-hearts" aria-hidden="true">♥ ✦ ★ ♥ ✦</div>
+
+      <button class="envelope-button" id="openEnvelope" type="button" aria-label="Open invitation">
+        <span class="mini-card">
+          <span class="mini-title">Baby Shower</span>
+          <span class="mini-line"></span>
+          <span class="mini-line short"></span>
+        </span>
+
+        <span class="envelope">
+          <span class="back"></span>
+          <span class="letter-peek"></span>
+          <span class="front-left"></span>
+          <span class="front-right"></span>
+          <span class="front-bottom"></span>
+          <span class="flap"></span>
+          <span class="seal">♥</span>
+        </span>
+
+        <span class="tap-text">Tap to Open Invitation</span>
+      </button>
+    </section>
+
     <div class="video-bar" aria-hidden="true"><span></span></div>
 
     <section class="invitation" id="inviteCard" aria-label="Baby shower invitation">
