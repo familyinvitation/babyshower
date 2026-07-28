@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baby Shower Invitation</title>
+  <meta name="description" content="Animated mobile baby shower invitation webpage." />
+  <meta name="theme-color" content="#9dbdff" />
+  <meta property="og:title" content="Baby Shower Invitation" />
+  <meta property="og:description" content="Please join us for a Baby Shower honoring Taranjeet Shah Arora and Dhruw Shah." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!--
+    EDIT TEXT HERE:
+    Change the names, date, time, venue, address, RSVP number, and notes below.
+    EDIT BUTTON LINKS:
+    Change map/calendar/RSVP/share details in script.js.
+  -->
+
+  <main class="phone-wrap">
+    <div class="video-bar" aria-hidden="true"><span></span></div>
+
+    <section class="invitation" id="inviteCard" aria-label="Baby shower invitation">
+      <div class="sky-glow one"></div>
+      <div class="sky-glow two"></div>
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+
+      <div class="stars s1">★ ✦ ★</div>
+      <div class="stars s2">✦ ★ ✦</div>
+      <div class="stars s3">★ ✦</div>
+
+      <div class="balloons left reveal d1" aria-hidden="true">
+        <span class="balloon pink"></span>
+        <span class="balloon blue"></span>
+        <span class="balloon purple"></span>
+        <i></i>
+      </div>
+
+      <div class="balloons right reveal d6" aria-hidden="true">
+        <span class="balloon blue"></span>
+        <span class="balloon purple"></span>
+        <span class="balloon pink"></span>
+        <i></i>
+      </div>
+
+      <article class="center-card">
+        <div class="top-ornament">⌁</div>
+
+        <header class="reveal d2">
+          <p class="small-title">Please Join Us For A</p>
+          <h1><span>Baby</span> Shower</h1>
+        </header>
+
+        <section class="honoree reveal d3">
+          <p class="section-label">Honoring Our Daughter:</p>
+          <p class="name">Taranjeet Shah Arora</p>
+
+          <div class="divider"><span>♥</span></div>
+
+          <p class="section-label">Honoring Our Son-In-Law:</p>
+          <p class="name">Dhruw Shah</p>
+
+          <div class="divider"><span>♥</span></div>
+
+          <p class="section-label">In Celebration Of Their Baby</p>
+        </section>
+
+        <section class="event reveal d4">
+          <p class="date">Saturday, August 22nd</p>
+          <p class="time">5:00 PM</p>
+
+          <div class="dot-line"></div>
+
+          <p class="venue">Spice of Bombay</p>
+          <p class="address">9940 College Blvd</p>
+          <p class="address">Overland Park, KS 66210</p>
+        </section>
+
+        <section class="footer-info reveal d5">
+          <p class="ladies">Ladies Only</p>
+          <p class="hosted">Hosted by Meenu Arora</p>
+          <p class="rsvp">RSVP to Meenu at <a href="tel:+19132254503">913-225-4503</a></p>
+          <p class="gift">No Boxed Gifts Please</p>
+        </section>
+      </article>
+
+      <div class="baby-house reveal d5" aria-hidden="true">
+        <div class="roof"></div>
+        <div class="house">
+          <span class="window"></span>
+          <span class="door"></span>
+          <span class="flags"></span>
+        </div>
+      </div>
+
+      <div class="teddy bear-left reveal d6" aria-hidden="true">🧸</div>
+      <div class="teddy bear-right reveal d6" aria-hidden="true">🧸</div>
+
+      <div class="flowers left-flower"></div>
+      <div class="flowers right-flower"></div>
+    </section>
+
+    <nav class="actions" aria-label="Invitation actions">
+      <a id="mapLink" href="#" target="_blank" rel="noopener">Open Map</a>
+      <a id="calendarLink" href="#" target="_blank" rel="noopener">Add Calendar</a>
+      <a id="rsvpLink" href="#">RSVP</a>
+      <button id="shareBtn" type="button">Share</button>
+    </nav>
+
+    <p class="hint">Tap the invitation to replay the animation</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
