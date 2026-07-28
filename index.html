@@ -8,20 +8,1036 @@
   <meta name="theme-color" content="#9dbdff" />
   <meta property="og:title" content="Baby Shower Invitation" />
   <meta property="og:description" content="Please join us for a Baby Shower honoring Taranjeet Shah Arora and Dhruw Shah." />
-  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --pink: #df5d9c;
+      --pink-soft: #f6a6cf;
+      --blue: #5961cf;
+      --blue-dark: #364789;
+      --gold: #d5a95b;
+      --gold-dark: #b67d2d;
+      --paper: rgba(255, 252, 247, .94);
+      --shadow: 0 30px 75px rgba(0,0,0,.42);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      background:
+        radial-gradient(circle at top left, rgba(255, 199, 229, .22), transparent 30%),
+        radial-gradient(circle at top right, rgba(152, 191, 255, .22), transparent 30%),
+        linear-gradient(180deg, #13192b, #070912);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .phone-wrap {
+      width: min(100%, 470px);
+      position: relative;
+    }
+
+    .envelope-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255,255,255,.35), transparent 19%),
+        radial-gradient(circle at 80% 18%, rgba(255, 198, 226, .32), transparent 24%),
+        linear-gradient(180deg, #95bdff 0%, #ffddea 56%, #d7dcff 100%);
+      transition: opacity .75s ease, visibility .75s ease;
+    }
+
+    .phone-wrap.opened .envelope-screen {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition-delay: 1.75s;
+    }
+
+    .floating-hearts {
+      position: absolute;
+      top: 18%;
+      left: 50%;
+      translate: -50% 0;
+      color: rgba(174, 118, 41, .62);
+      font-size: 20px;
+      letter-spacing: 13px;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    .home-teddy {
+      position: absolute;
+      z-index: 4;
+      font-size: clamp(42px, 10vw, 76px);
+      line-height: 1;
+      filter: drop-shadow(0 8px 12px rgba(94, 64, 104, .18));
+      animation: teddyFloat 4.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .home-teddy-left {
+      left: max(16px, calc(50% - 245px));
+      bottom: 16%;
+      rotate: -8deg;
+    }
+
+    .home-teddy-right {
+      right: max(16px, calc(50% - 245px));
+      bottom: 16%;
+      rotate: 8deg;
+      animation-delay: .8s;
+    }
+
+    .home-teddy-small {
+      font-size: clamp(30px, 7vw, 52px);
+      opacity: .9;
+    }
+
+    .home-teddy-top {
+      left: max(30px, calc(50% - 175px));
+      top: 18%;
+      rotate: 10deg;
+      animation-delay: 1.3s;
+    }
+
+    .home-teddy-bottom {
+      right: max(38px, calc(50% - 155px));
+      bottom: 7%;
+      rotate: -10deg;
+      animation-delay: 1.9s;
+    }
+
+    .envelope-button {
+      width: min(100%, 390px);
+      height: 430px;
+      border: 0;
+      background: transparent;
+      position: relative;
+      cursor: pointer;
+      perspective: 1100px;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .envelope {
+      position: absolute;
+      width: 320px;
+      height: 220px;
+      left: 50%;
+      top: 145px;
+      translate: -50% 0;
+      filter: drop-shadow(0 25px 30px rgba(78, 61, 91, .25));
+    }
+
+    .back {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #fff2f8, #efdbff);
+      border: 2px solid rgba(202, 160, 94, .75);
+    }
+
+    .letter-peek {
+      position: absolute;
+      width: 250px;
+      height: 155px;
+      left: 35px;
+      top: -52px;
+      border-radius: 18px 18px 8px 8px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,248,252,.94)),
+        linear-gradient(135deg, #f7a8cc, #9dbdff);
+      border: 2px solid rgba(213, 169, 91, .72);
+      transform-origin: bottom;
+      transition: transform 1.15s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
+    }
+
+    .front-left,
+    .front-right,
+    .front-bottom {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+    }
+
+    .front-left {
+      background: linear-gradient(35deg, #ffd8e9 0 49%, transparent 50%);
+    }
+
+    .front-right {
+      background: linear-gradient(-35deg, #e5ddff 0 49%, transparent 50%);
+    }
+
+    .front-bottom {
+      background: linear-gradient(0deg, #f7c1dc 0 48%, transparent 49%);
+    }
+
+    .flap {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 320px;
+      height: 142px;
+      transform-origin: top center;
+      background: linear-gradient(180deg, #ffe8f2, #dcd4ff);
+      border-radius: 18px 18px 20px 20px;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-top: 2px solid rgba(202, 160, 94, .75);
+      transition: transform 1s cubic-bezier(.2,.75,.2,1), z-index 0s linear .5s;
+      z-index: 5;
+    }
+
+    .seal {
+      position: absolute;
+      left: 50%;
+      top: 102px;
+      translate: -50% 0;
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f5a6c9, #d864a0);
+      color: #fff;
+      font-size: 25px;
+      border: 3px solid rgba(255,255,255,.7);
+      box-shadow: 0 8px 18px rgba(181, 85, 137, .28);
+      z-index: 7;
+      transition: transform .75s ease, opacity .5s ease;
+    }
+
+    .mini-card {
+      position: absolute;
+      width: 225px;
+      height: 265px;
+      left: 50%;
+      top: 58px;
+      translate: -50% 0;
+      z-index: 1;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(157,189,255,.25), transparent 24%),
+        radial-gradient(circle at 80% 80%, rgba(246,166,207,.25), transparent 26%),
+        #fffdf9;
+      border: 2px solid rgba(213, 169, 91, .75);
+      box-shadow: 0 12px 25px rgba(79, 55, 106, .12);
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 12px;
+      color: var(--blue);
+      transform: translateY(85px) scale(.84);
+      opacity: .2;
+      transition: transform 1.25s cubic-bezier(.16,.9,.2,1), opacity .75s ease;
+    }
+
+    .mini-title {
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: 44px;
+      color: var(--pink);
+    }
+
+    .mini-line {
+      width: 130px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(91, 97, 207, .23);
+    }
+
+    .mini-line.short {
+      width: 90px;
+      background: rgba(213, 169, 91, .34);
+    }
+
+    .tap-text {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 4px;
+      color: #40518e;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: .2px;
+      text-shadow: 0 1px 0 rgba(255,255,255,.55);
+      animation: pulseText 1.55s ease-in-out infinite;
+    }
+
+    .phone-wrap.opened .flap {
+      z-index: 0;
+      transform: rotateX(178deg);
+    }
+
+    .phone-wrap.opened .seal {
+      transform: translateY(28px) scale(.15);
+      opacity: 0;
+    }
+
+    .phone-wrap.opened .letter-peek {
+      transform: translateY(-58px) scale(1.03);
+      opacity: .95;
+    }
+
+    .phone-wrap.opened .mini-card {
+      transform: translateY(-145px) scale(1);
+      opacity: 1;
+    }
+
+    .phone-wrap.opened .tap-text {
+      opacity: 0;
+    }
+
+    .video-bar {
+      width: 92%;
+      height: 4px;
+      margin: 0 auto 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.2);
+      opacity: 0;
+    }
+
+    .video-bar span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform-origin: left;
+      background: linear-gradient(90deg, #f7a8cc, #f6dd9b, #a5bbff);
+      animation: progress 12s ease-out both;
+    }
+
+    .phone-wrap.opened .video-bar {
+      animation: showMain .65s ease 1.75s both;
+    }
+
+    .invitation {
+      position: relative;
+      overflow: hidden;
+      min-height: min(95vh, 835px);
+      border-radius: 26px;
+      padding: 26px 16px 22px;
+      background:
+        radial-gradient(circle at 16% 10%, rgba(255,255,255,.34), transparent 17%),
+        radial-gradient(circle at 88% 16%, rgba(255,255,255,.38), transparent 19%),
+        linear-gradient(180deg, #95bdff 0%, #d6d7ff 25%, #ffdceb 52%, #f7e9ff 73%, #c4deff 100%);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      isolation: isolate;
+      opacity: 0;
+      transform: translateY(30px) scale(.96);
+    }
+
+    .phone-wrap.opened .invitation {
+      animation: cardIn 1s ease 1.55s both;
+    }
+
+    .invitation::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1px solid rgba(255,255,255,.5);
+      border-radius: 22px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .sky-glow {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(18px);
+      opacity: .78;
+      z-index: 0;
+    }
+
+    .sky-glow.one {
+      width: 240px;
+      height: 170px;
+      left: -48px;
+      top: -12px;
+      background: #9fd0ff;
+    }
+
+    .sky-glow.two {
+      width: 260px;
+      height: 185px;
+      right: -70px;
+      top: -8px;
+      background: #ffc2de;
+    }
+
+    .cloud {
+      position: absolute;
+      height: 42px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.58);
+      z-index: 1;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: inherit;
+    }
+
+    .cloud::before { width: 42px; height: 42px; top: -16px; left: 13px; }
+    .cloud::after { width: 58px; height: 58px; top: -27px; right: 10px; }
+    .c1 { width: 135px; top: 33px; right: 18px; }
+    .c2 { width: 100px; top: 68px; right: 105px; opacity: .45; }
+    .c3 { width: 90px; top: 38px; left: 45px; opacity: .32; }
+
+    .stars {
+      position: absolute;
+      color: #d7a13f;
+      z-index: 2;
+      opacity: .86;
+      letter-spacing: 8px;
+      font-size: 16px;
+      animation: twinkle 3.8s ease-in-out infinite;
+    }
+
+    .s1 { top: 28px; left: 34px; }
+    .s2 { top: 126px; right: 20px; animation-delay: .8s; }
+    .s3 { bottom: 116px; left: 145px; animation-delay: 1.4s; }
+
+    .center-card {
+      position: relative;
+      z-index: 5;
+      width: min(100%, 358px);
+      margin: 25px auto 0;
+      padding: 30px 18px 24px;
+      text-align: center;
+      background: var(--paper);
+      border: 3px solid var(--gold);
+      border-radius: 88px 88px 28px 28px / 62px 62px 28px 28px;
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,.7), 0 14px 35px rgba(102, 79, 132, .18);
+    }
+
+    .center-card::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 1.5px solid rgba(184, 126, 43, .48);
+      border-radius: 78px 78px 22px 22px / 52px 52px 22px 22px;
+      pointer-events: none;
+    }
+
+    .top-ornament {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      translate: -50% 0;
+      color: var(--gold-dark);
+      font-size: 26px;
+      opacity: .85;
+    }
+
+    .small-title {
+      margin: 6px 0 6px;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      font-size: clamp(12px, 3.2vw, 16px);
+      font-weight: 800;
+      letter-spacing: .8px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: clamp(56px, 15vw, 76px);
+      font-weight: 400;
+      line-height: .82;
+      color: var(--blue);
+      text-shadow: 0 2px 0 rgba(255,255,255,.6);
+    }
+
+    h1 span { color: var(--pink); }
+
+    .section-label {
+      margin: 9px 0 4px;
+      color: var(--blue-dark);
+      text-transform: uppercase;
+      font-size: clamp(12px, 3.2vw, 16px);
+      font-weight: 800;
+      letter-spacing: .35px;
+    }
+
+    .name,
+    .date,
+    .venue,
+    .hosted {
+      margin: 0;
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-weight: 400;
+    }
+
+    .name {
+      font-size: clamp(38px, 10.2vw, 55px);
+      line-height: .95;
+      color: var(--gold-dark);
+    }
+
+    .divider {
+      width: min(92%, 270px);
+      margin: 8px auto 9px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--pink-soft);
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1.4px;
+      background: linear-gradient(90deg, transparent, rgba(121, 133, 209, .9), transparent);
+    }
+
+    .divider span { font-size: 13px; }
+
+    .date {
+      margin-top: 7px;
+      font-size: clamp(29px, 7.6vw, 43px);
+      line-height: 1.05;
+      color: var(--blue);
+    }
+
+    .time {
+      margin: 3px 0 0;
+      color: var(--pink);
+      font-size: clamp(20px, 5.4vw, 29px);
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+
+    .dot-line {
+      width: 72%;
+      margin: 10px auto 11px;
+      border-top: 2px dotted rgba(223, 93, 156, .45);
+    }
+
+    .venue {
+      font-size: clamp(31px, 8.2vw, 44px);
+      line-height: .95;
+      color: #5b679e;
+    }
+
+    .address {
+      margin: 2px 0 0;
+      color: #4f5e9d;
+      font-size: clamp(14px, 3.75vw, 19px);
+      font-weight: 800;
+      line-height: 1.22;
+    }
+
+    .footer-info { margin-top: 13px; }
+
+    .ladies {
+      margin: 0;
+      color: var(--pink);
+      text-transform: uppercase;
+      font-size: clamp(19px, 5.2vw, 27px);
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .hosted {
+      margin-top: 2px;
+      color: var(--blue);
+      font-size: clamp(25px, 6.6vw, 36px);
+    }
+
+    .rsvp {
+      margin: 4px 0 0;
+      color: #985b94;
+      font-size: clamp(13px, 3.6vw, 17px);
+      font-weight: 800;
+    }
+
+    .rsvp a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .gift {
+      display: inline-block;
+      margin: 10px 0 0;
+      padding: 5px 13px 6px;
+      border-radius: 999px;
+      background: linear-gradient(145deg, #c8b7ff, #907ade);
+      color: #fff;
+      font-size: clamp(13px, 3.6vw, 17px);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      box-shadow: 0 6px 14px rgba(115, 91, 179, .22);
+    }
+
+    .balloons {
+      position: absolute;
+      width: 130px;
+      height: 175px;
+      z-index: 4;
+    }
+
+    .balloons.left { top: 82px; left: 7px; }
+    .balloons.right { right: 3px; bottom: 164px; }
+
+    .balloon {
+      position: absolute;
+      width: 58px;
+      height: 73px;
+      border-radius: 50% 50% 46% 46%;
+      box-shadow: inset 11px 13px 16px rgba(255,255,255,.32), inset -13px -16px 18px rgba(71,49,87,.11);
+      animation: floatBalloon 4.7s ease-in-out infinite;
+    }
+
+    .balloon::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 10px;
+      bottom: -7px;
+      left: 50%;
+      translate: -50% 0;
+      background: inherit;
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      width: 1.4px;
+      height: 78px;
+      bottom: -81px;
+      left: 50%;
+      background: rgba(133, 105, 118, .68);
+    }
+
+    .balloon.pink { background: radial-gradient(circle at 35% 25%, #ffe4f0, transparent 22%), linear-gradient(145deg, #f3a1ca, #d977ab); }
+    .balloon.blue { background: radial-gradient(circle at 35% 25%, #e8f4ff, transparent 22%), linear-gradient(145deg, #7eb5ff, #5b83db); }
+    .balloon.purple { background: radial-gradient(circle at 35% 25%, #eee9ff, transparent 22%), linear-gradient(145deg, #b7a3ff, #8575d9); }
+
+    .left .pink { left: 0; top: 35px; }
+    .left .blue { left: 31px; top: 0; }
+    .left .purple { left: 61px; top: 42px; }
+
+    .right .blue { left: 0; top: 35px; }
+    .right .purple { left: 29px; top: 50px; }
+    .right .pink { left: 58px; top: 20px; }
+
+    .baby-house {
+      position: absolute;
+      z-index: 4;
+      left: 18px;
+      bottom: 84px;
+      width: 122px;
+      pointer-events: none;
+    }
+
+    .roof {
+      width: 95px;
+      height: 48px;
+      margin-left: 8px;
+      background: linear-gradient(180deg, #74a9ff, #3e79c4);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      filter: drop-shadow(0 3px 0 rgba(81,92,146,.25));
+    }
+
+    .house {
+      position: relative;
+      width: 98px;
+      height: 112px;
+      margin-top: -4px;
+      background: linear-gradient(180deg, #fff7ef, #efdcd5);
+      border-radius: 15px 15px 21px 21px;
+      box-shadow: inset 0 0 0 2px rgba(192, 145, 96, .5);
+    }
+
+    .window {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      top: 13px;
+      left: 33px;
+      border-radius: 50% 50% 12px 12px;
+      background: #9bc4ff;
+      box-shadow: inset 0 0 0 3px #645d91;
+    }
+
+    .window::before,
+    .window::after {
+      content: "";
+      position: absolute;
+      background: #645d91;
+    }
+
+    .window::before { width: 3px; height: 100%; left: 50%; translate: -50% 0; }
+    .window::after { height: 3px; width: 100%; top: 50%; translate: 0 -50%; }
+
+    .door {
+      position: absolute;
+      width: 34px;
+      height: 53px;
+      left: 32px;
+      bottom: 0;
+      border-radius: 20px 20px 0 0;
+      background: linear-gradient(180deg, #ffc2dc, #eb86ba);
+      box-shadow: inset 0 0 0 2px rgba(178, 99, 147, .65);
+    }
+
+    .door::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      right: 7px;
+      top: 28px;
+      border-radius: 50%;
+      background: #fff0b8;
+    }
+
+    .flags {
+      position: absolute;
+      top: 58px;
+      left: 12px;
+      right: 12px;
+      height: 15px;
+      background:
+        linear-gradient(140deg, transparent 0 45%, #f09bc6 45% 58%, transparent 58%) left center / 20px 100% repeat-x,
+        linear-gradient(40deg, transparent 0 45%, #76aaff 45% 58%, transparent 58%) 10px center / 20px 100% repeat-x;
+    }
+
+    .teddy {
+      position: absolute;
+      z-index: 6;
+      bottom: 12px;
+      font-size: 67px;
+      line-height: 1;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,.12));
+    }
+
+    .bear-left { left: 16px; }
+    .bear-right { right: 16px; transform: scaleX(-1); }
+
+    .teddy-top-left,
+    .teddy-top-right,
+    .teddy-mid-left,
+    .teddy-mid-right {
+      font-size: clamp(31px, 7vw, 52px);
+      opacity: .96;
+      z-index: 3;
+    }
+
+    .teddy-top-left {
+      top: 92px;
+      bottom: auto;
+      left: 14px;
+      rotate: -12deg;
+    }
+
+    .teddy-top-right {
+      top: 104px;
+      bottom: auto;
+      right: 14px;
+      rotate: 12deg;
+      transform: scaleX(-1);
+    }
+
+    .teddy-mid-left {
+      top: 48%;
+      bottom: auto;
+      left: 8px;
+      font-size: clamp(28px, 6.2vw, 46px);
+      rotate: 8deg;
+    }
+
+    .teddy-mid-right {
+      top: 53%;
+      bottom: auto;
+      right: 8px;
+      font-size: clamp(28px, 6.2vw, 46px);
+      rotate: -8deg;
+      transform: scaleX(-1);
+    }
+
+    .flowers {
+      position: absolute;
+      bottom: -12px;
+      z-index: 2;
+      width: 138px;
+      height: 126px;
+      opacity: .9;
+      background:
+        radial-gradient(circle at 22% 38%, #f5a7c7 0 13px, transparent 14px),
+        radial-gradient(circle at 39% 26%, #fed0df 0 12px, transparent 13px),
+        radial-gradient(circle at 57% 42%, #8bb8ff 0 15px, transparent 16px),
+        radial-gradient(circle at 73% 28%, #f4a0c9 0 13px, transparent 14px),
+        radial-gradient(circle at 50% 65%, #78a3eb 0 15px, transparent 16px);
+      filter: blur(.2px);
+    }
+
+    .left-flower { left: -10px; }
+    .right-flower { right: -10px; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px) scale(.98);
+    }
+
+    .phone-wrap.opened .reveal {
+      animation: reveal .9s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+
+    .d1 { animation-delay: 1.9s; }
+    .d2 { animation-delay: 2.25s; }
+    .d3 { animation-delay: 3.05s; }
+    .d4 { animation-delay: 4.05s; }
+    .d5 { animation-delay: 5.05s; }
+    .d6 { animation-delay: 5.85s; }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-top: 12px;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+
+    .phone-wrap.opened .actions {
+      animation: showMain .7s ease 6.4s both;
+      pointer-events: auto;
+    }
+
+    .actions a,
+    .actions button {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 999px;
+      padding: 11px 6px;
+      background: linear-gradient(145deg, #fff, #eedfff);
+      color: #43518e;
+      font: 800 12px/1 Arial, sans-serif;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 9px 18px rgba(0,0,0,.22);
+    }
+
+    .hint {
+      margin: 9px 0 0;
+      color: rgba(255,255,255,.8);
+      text-align: center;
+      font: 600 12px/1.3 Arial, sans-serif;
+      opacity: 0;
+    }
+
+    .phone-wrap.opened .hint {
+      animation: showMain .7s ease 6.4s both;
+    }
+
+    @keyframes progress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(25px) scale(.96); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(18px) scale(.97); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    @keyframes showMain {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatBalloon {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1.4deg); }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: .55; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
+    }
+
+    @keyframes pulseText {
+      0%, 100% { transform: translateY(0); opacity: .7; }
+      50% { transform: translateY(-3px); opacity: 1; }
+    }
+
+    @keyframes teddyFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-9px) rotate(2deg); }
+    }
+
+    @media (min-width: 700px) {
+      body {
+        padding: 28px;
+      }
+
+      .phone-wrap {
+        width: min(100%, 560px);
+      }
+
+      .envelope-button {
+        width: min(100%, 500px);
+        height: 500px;
+      }
+
+      .envelope {
+        width: 390px;
+        height: 265px;
+        top: 160px;
+      }
+
+      .flap {
+        width: 390px;
+        height: 168px;
+      }
+
+      .letter-peek {
+        width: 305px;
+        height: 185px;
+        left: 42px;
+        top: -62px;
+      }
+
+      .seal {
+        top: 123px;
+        width: 66px;
+        height: 66px;
+        font-size: 30px;
+      }
+
+      .mini-card {
+        width: 275px;
+        height: 310px;
+      }
+
+      .mini-title {
+        font-size: 56px;
+      }
+
+      .tap-text {
+        font-size: 21px;
+      }
+
+      .invitation {
+        min-height: 875px;
+        padding: 34px 26px 28px;
+      }
+
+      .center-card {
+        width: min(100%, 430px);
+        padding: 38px 28px 30px;
+      }
+
+      .baby-house {
+        left: 42px;
+        bottom: 92px;
+        transform: scale(1.08);
+        transform-origin: left bottom;
+      }
+
+      .bear-left { left: 40px; }
+      .bear-right { right: 40px; }
+
+      .teddy-top-left { left: 34px; top: 110px; }
+      .teddy-top-right { right: 34px; top: 118px; }
+      .teddy-mid-left { left: 28px; }
+      .teddy-mid-right { right: 28px; }
+
+      .actions a,
+      .actions button {
+        font-size: 13px;
+        padding: 13px 10px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      body { padding: 8px; }
+      .envelope-button { height: 405px; }
+      .envelope { width: 292px; height: 200px; top: 140px; }
+      .flap { width: 292px; height: 130px; }
+      .letter-peek { width: 226px; left: 33px; }
+      .seal { top: 92px; }
+      .mini-card { width: 210px; height: 245px; }
+      .home-teddy-left { left: 6px; bottom: 13%; }
+      .home-teddy-right { right: 6px; bottom: 13%; }
+      .home-teddy-top { left: 18px; top: 16%; }
+      .home-teddy-bottom { right: 22px; bottom: 5%; }
+
+      .invitation { min-height: auto; padding: 20px 12px 18px; }
+      .center-card { width: min(100%, 340px); padding: 30px 13px 22px; }
+      .balloons.left { left: -5px; }
+      .balloons.right { right: -9px; bottom: 152px; }
+      .baby-house { left: 4px; bottom: 78px; transform: scale(.9); transform-origin: left bottom; }
+      .teddy { font-size: 58px; }
+      .bear-left { left: 2px; }
+      .bear-right { right: 2px; }
+      .teddy-top-left,
+      .teddy-top-right {
+        top: 84px;
+        font-size: 34px;
+        opacity: .72;
+      }
+      .teddy-top-left { left: 3px; }
+      .teddy-top-right { right: 3px; }
+      .teddy-mid-left,
+      .teddy-mid-right {
+        font-size: 30px;
+        opacity: .62;
+      }
+      .teddy-mid-left { left: 1px; top: 46%; }
+      .teddy-mid-right { right: 1px; top: 51%; }
+      .actions a, .actions button { font-size: 11px; padding: 10px 3px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+      }
+      .reveal,
+      .invitation,
+      .video-bar,
+      .actions,
+      .hint { opacity: 1; transform: none; }
+      .envelope-screen { display: none; }
+    }
+  </style>
 </head>
+
 <body>
   <!--
-    EDIT TEXT HERE:
-    Change the names, date, time, venue, address, RSVP number, and notes below.
-
-    EDIT BUTTON LINKS:
-    Change map/calendar/RSVP/share details in script.js.
+    This is a single-file version for GitHub Pages.
+    Upload only this index.html to the root of the repository.
   -->
 
   <main class="phone-wrap" id="phoneWrap">
     <section class="envelope-screen" id="envelopeScreen" aria-label="Open invitation envelope">
       <div class="floating-hearts" aria-hidden="true">♥ ✦ ★ ♥ ✦</div>
+      <div class="home-teddy home-teddy-left" aria-hidden="true">🧸</div>
+      <div class="home-teddy home-teddy-right" aria-hidden="true">🧸</div>
+      <div class="home-teddy home-teddy-small home-teddy-top" aria-hidden="true">🧸</div>
+      <div class="home-teddy home-teddy-small home-teddy-bottom" aria-hidden="true">🧸</div>
 
       <button class="envelope-button" id="openEnvelope" type="button" aria-label="Open invitation">
         <span class="mini-card">
@@ -61,14 +1077,12 @@
         <span class="balloon pink"></span>
         <span class="balloon blue"></span>
         <span class="balloon purple"></span>
-        <i></i>
       </div>
 
       <div class="balloons right reveal d6" aria-hidden="true">
         <span class="balloon blue"></span>
         <span class="balloon purple"></span>
         <span class="balloon pink"></span>
-        <i></i>
       </div>
 
       <article class="center-card">
@@ -123,6 +1137,10 @@
 
       <div class="teddy bear-left reveal d6" aria-hidden="true">🧸</div>
       <div class="teddy bear-right reveal d6" aria-hidden="true">🧸</div>
+      <div class="teddy teddy-top-left reveal d2" aria-hidden="true">🧸</div>
+      <div class="teddy teddy-top-right reveal d3" aria-hidden="true">🧸</div>
+      <div class="teddy teddy-mid-left reveal d4" aria-hidden="true">🧸</div>
+      <div class="teddy teddy-mid-right reveal d5" aria-hidden="true">🧸</div>
 
       <div class="flowers left-flower"></div>
       <div class="flowers right-flower"></div>
@@ -138,6 +1156,85 @@
     <p class="hint">Tap the invitation to replay the animation</p>
   </main>
 
-  <script src="script.js"></script>
+  <script>
+    const invitationLinks = {
+      map: "https://www.google.com/maps/search/?api=1&query=Spice%20of%20Bombay%209940%20College%20Blvd%20Overland%20Park%20KS%2066210",
+      rsvp: "tel:+19132254503",
+      calendarTitle: "Baby Shower for Taranjeet Shah Arora",
+      calendarDetails: "Please join us for a Baby Shower honoring Taranjeet Shah Arora and Dhruw Shah. Hosted by Meenu Arora. Ladies only. No boxed gifts please.",
+      calendarLocation: "Spice of Bombay, 9940 College Blvd, Overland Park, KS 66210",
+      calendarDates: "20260822T170000/20260822T200000",
+      calendarTimezone: "America/Chicago"
+    };
+
+    const phoneWrap = document.getElementById("phoneWrap");
+    const openEnvelope = document.getElementById("openEnvelope");
+    const mapLink = document.getElementById("mapLink");
+    const calendarLink = document.getElementById("calendarLink");
+    const rsvpLink = document.getElementById("rsvpLink");
+    const shareBtn = document.getElementById("shareBtn");
+    const inviteCard = document.getElementById("inviteCard");
+    const progress = document.querySelector(".video-bar span");
+    const revealEls = document.querySelectorAll(".reveal");
+
+    mapLink.href = invitationLinks.map;
+    rsvpLink.href = invitationLinks.rsvp;
+    calendarLink.href = buildGoogleCalendarUrl(invitationLinks);
+
+    openEnvelope.addEventListener("click", () => {
+      phoneWrap.classList.add("opened");
+      restartMainAnimation();
+    });
+
+    shareBtn.addEventListener("click", async () => {
+      const shareText =
+        "Please join us for a Baby Shower honoring Taranjeet Shah Arora and Dhruw Shah on Saturday, August 22nd at 5:00 PM at Spice of Bombay, Overland Park, KS.";
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: invitationLinks.calendarTitle,
+            text: shareText,
+            url: window.location.href
+          });
+          return;
+        } catch (error) {
+          // User cancelled share.
+        }
+      }
+
+      window.open("https://wa.me/?text=" + encodeURIComponent(`${shareText}\n${window.location.href}`), "_blank", "noopener");
+    });
+
+    inviteCard.addEventListener("click", () => {
+      if (phoneWrap.classList.contains("opened")) {
+        restartMainAnimation();
+      }
+    });
+
+    function buildGoogleCalendarUrl(data) {
+      const params = new URLSearchParams({
+        action: "TEMPLATE",
+        text: data.calendarTitle,
+        dates: data.calendarDates,
+        ctz: data.calendarTimezone,
+        details: data.calendarDetails,
+        location: data.calendarLocation
+      });
+      return "https://calendar.google.com/calendar/render?" + params.toString();
+    }
+
+    function restartMainAnimation() {
+      revealEls.forEach((el) => {
+        el.style.animation = "none";
+        el.offsetHeight;
+        el.style.animation = "";
+      });
+
+      progress.style.animation = "none";
+      progress.offsetHeight;
+      progress.style.animation = "";
+    }
+  </script>
 </body>
 </html>
